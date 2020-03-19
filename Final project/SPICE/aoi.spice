@@ -1,0 +1,58 @@
+SIMULATION OF AOI21X1
+
+* And-Or-Invert : 3 inputs
+
+* Include 
+.include tsmc180.lib
+
+.option scale=0.09u
+
+.param TESTTS=50n
+.param TESTTON=25n
+.param TDELAY=200p
+.param TESTRISE=0.06n
+
+.subckt aoi A B C Y vs gnd  
+M1p 1 A vs vs cmosp w=48 l=2
+M2p 1 B vs vs cmosp w=48 l=2
+M3p Y C 1 vs cmosp w=48 l=2
+M1n Y A 2 gnd cmosn w=17 l=2
+M2n 2 B gnd gnd cmosn w=17 l=2
+M3n Y C gnd gnd cmosn w=11 l=2
+.ends
+
+* Voltage sources
+Vs Vdd 0 dc 1.8v
+*V1 1 0 dc 1.8v
+V2 2 0 dc 1.8v
+V3 3 0 dc 0v
+Vt 1 0  pulse ( 0, 1.8, {TDELAY}, {TESTRISE}, {TESTRISE}, {TESTTON}, {TESTTS} )
+
+* AOI stages
+X1 1 2 3 out Vdd 0 aoi
+
+c1 out 0 500f
+
+* Control area
+.control
+
+destroy all
+tran 1p 100n 
+
+let c1=0
+let c2=0
+let midpoint=1.8/2.0
+
+plot v(out) v(1) vs time
+
+cursor c1 right v(out) midpoint 1 falling
+cursor c2 right v(1) midpoint 1 rising
+print time[%c1] - time[%c2]
+
+cursor c1 right v(out) midpoint 1 rising
+cursor c2 right v(1) midpoint 1 falling
+print time[%c1] - time[%c2]
+
+.endc
+
+.end

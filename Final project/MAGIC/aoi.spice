@@ -1,0 +1,32 @@
+* SPICE3 file created from aoi.ext - technology: sample_6m
+
+.option scale=0.09u
+
+M1000 Vdd A a_n29_n14# Vdd pmos w=16 l=2
++ ad=352 pd=140 as=544 ps=228 
+M1001 a_n29_n14# A Vdd Vdd pmos w=16 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1002 Vdd A a_n29_n14# Vdd pmos w=16 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1003 a_n29_n14# B Vdd Vdd pmos w=16 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1004 Vdd B a_n29_n14# Vdd pmos w=16 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1005 a_n29_n14# B Vdd Vdd pmos w=16 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1006 Out C a_n29_n14# Vdd pmos w=16 l=2
++ ad=208 pd=90 as=0 ps=0 
+M1007 a_n29_n14# C Out Vdd pmos w=16 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1008 Out C a_n29_n14# Vdd pmos w=16 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1009 Gnd A a_n20_n38# Gnd nmos w=5 l=2
++ ad=137 pd=70 as=137 ps=80 
+M1010 a_n20_n38# A Gnd Gnd nmos w=11 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1011 Out B a_n20_n38# Gnd nmos w=11 l=2
++ ad=137 pd=70 as=0 ps=0 
+M1012 a_n20_n38# B Out Gnd nmos w=5 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1013 Gnd C Out Gnd nmos w=11 l=2
++ ad=0 pd=0 as=0 ps=0 

@@ -1,0 +1,71 @@
+SIMULATION OF INVERTER
+
+* Reference inverter simulation
+
+* Include 
+.include tsmc180.lib
+
+.option scale=0.09u
+
+.param TESTTS=50n
+.param TESTTON=25n
+.param TDELAY=200p
+.param TESTRISE=0.06n
+
+* Voltage sources
+Vs Vdd 0  dc 1.8v
+Vt in 0 dc 0v
+* Vt in 0  pulse ( 0, 1.8, {TDELAY}, {TESTRISE}, {TESTRISE}, {TESTTON}, {TESTTS} )
+
+* CMOS inverter
+
+
+M1000 out in Vdd  Vdd  cmosp w=20 l=2
++ ad=340 pd=140 as=390 ps=160 
+M1001 Vdd  in out Vdd  cmosp w=20 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1002 out in Vdd  Vdd  cmosp w=20 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1003 Vdd  in out Vdd  cmosp w=20 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1004 out in Vdd  Vdd  cmosp w=10 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1005 out in 0 0 cmosn w=10 l=2
++ ad=139 pd=68 as=184 ps=96 
+M1006 0 in out 0 cmosn w=10 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1007 out in 0 0 cmosn w=10 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1008 0 in out 0 cmosn w=9 l=2
++ ad=0 pd=0 as=0 ps=0 
+
+
+c1 out 0 2p
+
+* Control area
+.control
+
+destroy all
+tran 1p 100n 
+
+let c1=0
+let c2=0
+let c3=0
+let c4=0
+
+let midpoint=1.8/2.0
+
+*plot v(out) v(in) vs time
+
+cursor c1 right v(out) midpoint 1 falling
+cursor c2 right v(in) midpoint 1 rising
+print time[%c2]- time[%c1]
+cursor c3 right v(out) midpoint 1 rising
+cursor c4 right v(in) midpoint 1 falling
+print time[%c4]- time[%c3]
+
+plot i(Vs)*v(Vdd) vs time
+
+.endc
+
+.end

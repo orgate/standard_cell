@@ -1,0 +1,86 @@
+SIMULATION OF AOI21X1
+
+* And-Or-Invert : 3 inputs
+
+* Include 
+.include tsmc180.lib
+
+.option scale=0.09u
+
+.param TESTTS=10n
+.param TESTTON=5n
+.param TDELAY=200p
+.param TESTRISE=0.06n
+
+.subckt aoi A B C Out Vdd Gnd  
+M1000 Vdd A a_n29_n14 Vdd cmosp w=16 l=2
++ ad=352 pd=140 as=544 ps=228 
+M1001 a_n29_n14 A Vdd Vdd cmosp w=16 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1002 Vdd A a_n29_n14 Vdd cmosp w=16 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1003 a_n29_n14 B Vdd Vdd cmosp w=16 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1004 Vdd B a_n29_n14 Vdd cmosp w=16 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1005 a_n29_n14 B Vdd Vdd cmosp w=16 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1006 Out C a_n29_n14 Vdd cmosp w=16 l=2
++ ad=208 pd=90 as=0 ps=0 
+M1007 a_n29_n14 C Out Vdd cmosp w=16 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1008 Out C a_n29_n14 Vdd cmosp w=16 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1009 Gnd A a_n20_n38 Gnd cmosn w=5 l=2
++ ad=137 pd=70 as=137 ps=80 
+M1010 a_n20_n38 A Gnd Gnd cmosn w=11 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1011 Out B a_n20_n38 Gnd cmosn w=11 l=2
++ ad=144 pd=72 as=0 ps=0 
+M1012 a_n20_n38 B Out Gnd cmosn w=5 l=2
++ ad=0 pd=0 as=0 ps=0 
+M1013 Gnd C Out Gnd cmosn w=11 l=2
++ ad=0 pd=0 as=0 ps=0 
+.ends
+
+* Voltage sources
+Vs Vddp 0 dc 1.8v
+V1 1 0 dc 0v
+V2 2 0 dc 0v
+*V3 3 0 dc 0v
+Vt 3 0 dc 1.8v pulse ( 1.8v, 0, {TDELAY}, {TESTRISE}, {TESTRISE}, {TESTTON}, {TESTTS} )
+
+* AOI stages
+X1 1 2 3 out Vddp 0 aoi
+
+c1 out 0 0.025p
+
+* Control area
+.control
+
+op
+print i(Vs)*v(Vddp)
+
+destroy all
+tran 1p 5n 
+
+let c1=0
+let c2=0
+let midpoint=1.8/2.0
+
+plot v(out) v(3) vs time
+plot abs(v(Vddp)*i(Vs)) vs time
+
+print integrate(abs(v(Vddp)*i(Vs)))
+
+cursor c1 right v(out) midpoint 1 falling
+cursor c2 right v(3) midpoint 1 rising
+print time[%c1] - time[%c2]
+
+cursor c1 right v(out) midpoint 1 rising
+cursor c2 right v(3) midpoint 1 falling
+print time[%c1] - time[%c2]
+
+.endc
+
+.end

@@ -1,0 +1,53 @@
+SIMULATION OF INVERTER
+
+* Reference inverter simulation
+
+* Include 
+.include tsmc180.lib
+
+.option scale=0.09u
+
+.param TESTTS=50n
+.param TESTTON=25n
+.param TDELAY=200p
+.param TESTRISE=0.06n
+
+.subckt cmosinv ip op vs gnd 
+M1 op ip vs vs cmosp w=25 l=2
++ ad=120 pd=52 as=120 ps=52 
+M2 op ip gnd gnd cmosn w=10 l=2
++ ad=60 pd=32 as=60 ps=32 
+.ends
+
+* Voltage sources
+Vs Vdd 0  dc 1.8v
+Vt in 0  pulse ( 0, 1.8, {TDELAY}, {TESTRISE}, {TESTRISE}, {TESTTON}, {TESTTS} )
+
+* CMOS inverter
+X1 in out Vdd 0 cmosinv
+
+c1 out 0 500f
+
+* Control area
+.control
+
+destroy all
+tran 1p 100n 
+
+let c1=0
+let c2=0
+let midpoint=1.8/2.0
+
+plot v(out) v(in) vs time
+
+cursor c1 right v(out) midpoint 1 falling
+cursor c2 right v(in) midpoint 1 rising
+print time[%c2]- time[%c1]
+
+cursor c1 right v(out) midpoint 1 rising
+cursor c2 right v(in) midpoint 1 falling
+print time[%c2]- time[%c1]
+
+.endc
+
+.end

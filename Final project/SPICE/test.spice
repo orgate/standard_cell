@@ -1,0 +1,43 @@
+SIMULATION OF TRANSMISSION GATE
+
+* Simulation of a transmission gate with various sizes
+
+* Include 
+.include tsmc180.lib
+
+* Timing constants
+.param TS=8n
+.param TON=4n
+.param TESTTS=2n
+.param TESTTON=1000p
+.param TDELAY=100p
+.param TESTRISE=1p
+.param TRISE=1p
+
+* Voltage sources
+vs vss 0  dc 1.8v
+vt vtest 0  pulse ( 0, 1.6, {TDELAY}, {TESTRISE}, {TESTRISE}, {TESTTON}, {TESTTS} )
+vclk vc 0  pulse ( 0, 1.8, 1p, {TRISE}, {TRISE}, {TON}, {TS} )
+vclkb vcb 0  pulse ( 0, 1.8, {TS}, {TRISE}, {TRISE}, {TON}, {TRISE} )
+
+
+* Create a transmission gate
+
+mpt1 vtest vc  vo1 vss cmosp w=360n l=180n m=1
+mnt1 vtest vcb vo1 0   cmosn w=360n l=180n m=1
+
+* Add an inverter
+
+mpinv1 vo2 vo1 vss vss cmosp w=720n l=180n m=1
+mninv1 v02 vo1 0   0   cmosn w=360n l=180n m=1
+
+c1 vo1 0 1f
+* Control area
+.control
+destroy all
+tran 1p 20n 
+
+plot v(vc) v(vtest) v(vo1) vs time
+
+.endc
+.end

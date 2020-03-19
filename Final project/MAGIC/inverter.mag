@@ -1,0 +1,44 @@
+magic
+tech sample_6m
+timestamp 1382449037
+<< nwell >>
+rect -4 32 18 76
+<< pwell >>
+rect -4 -4 18 32
+<< ntransistor >>
+rect 6 15 8 25
+<< ptransistor >>
+rect 6 38 8 58
+<< ndiffusion >>
+rect 5 15 6 25
+rect 8 15 9 25
+<< pdiffusion >>
+rect 5 38 6 58
+rect 8 38 9 58
+<< ndcontact >>
+rect 0 15 5 25
+rect 9 15 14 25
+<< pdcontact >>
+rect 0 38 5 58
+rect 9 38 14 58
+<< polysilicon >>
+rect 6 58 8 61
+rect 6 34 8 38
+rect 5 29 8 34
+rect 6 25 8 29
+rect 6 12 8 15
+<< polycontact >>
+rect 0 29 5 34
+<< metal1 >>
+rect -2 64 16 74
+rect 0 58 5 64
+rect -2 29 0 34
+rect 9 25 14 38
+rect 0 8 5 15
+rect -2 0 16 8
+<< labels >>
+rlabel metal1 6 69 8 74 5 Vdd
+rlabel metal1 6 3 7 4 1 Gnd
+rlabel metal1 -2 31 -1 32 3 in
+rlabel metal1 13 31 14 32 1 out
+<< end >>
